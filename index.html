@@ -96,6 +96,17 @@
   .pshot p{font-size:14px;color:var(--mut);}
   .pshot .ring{width:120px;height:120px;border-radius:50%;border:8px solid rgba(255,255,255,.08);border-top-color:var(--green);animation:spin 1.4s linear infinite;margin-bottom:18px;}
   @keyframes spin{to{transform:rotate(360deg);}}
+  /* live app iframe inside the phone */
+  .phonewrap{position:relative;width:300px;margin:0 auto;}
+  .phone{position:relative;z-index:2;}
+  .phoneglow{position:absolute;inset:-30px;z-index:0;background:radial-gradient(circle,rgba(25,227,125,.35),transparent 65%);filter:blur(30px);animation:glowbreath 4s ease-in-out infinite;}
+  @keyframes glowbreath{0%,100%{opacity:.5;}50%{opacity:.95;}}
+  .appFrame{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:34px;background:#070d1c;}
+  .iframeskel{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--mut);font-size:13px;background:#070d1c;}
+  .iframeskel .ring{width:64px;height:64px;border:6px solid rgba(255,255,255,.08);border-top-color:var(--green);border-radius:50%;animation:spin 1.2s linear infinite;}
+  .liveBadge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);z-index:5;background:linear-gradient(135deg,var(--green),var(--cyan));color:#04210f;font-size:11px;font-weight:900;letter-spacing:.5px;padding:7px 14px;border-radius:999px;white-space:nowrap;box-shadow:0 8px 24px rgba(25,227,125,.5);display:flex;align-items:center;gap:7px;}
+  .liveBadge .ld{width:7px;height:7px;border-radius:50%;background:#04210f;animation:pulse2 1.3s infinite;}
+  @keyframes pulse2{0%,100%{opacity:1;}50%{opacity:.25;}}
   .demolist .ditem{display:flex;gap:14px;padding:16px;border-radius:14px;cursor:pointer;transition:.25s;border:1px solid transparent;}
   .demolist .ditem.act{background:var(--glass);border-color:var(--gline);}
   .demolist .ditem .di{flex:0 0 44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--green),var(--cyan));display:grid;place-items:center;font-size:22px;}
@@ -189,9 +200,39 @@
   .modalc label{font-size:12.5px;font-weight:700;color:var(--mut);display:block;margin:12px 0 5px;}
   .modalc select,.modalc input{width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--gline);background:#070d1c;color:#fff;font-family:inherit;font-size:14.5px;}
   .modalc .x{position:absolute;top:16px;right:18px;cursor:pointer;font-size:22px;color:var(--mut);}
+  /* scroll progress bar */
+  .scrollprog{position:fixed;top:0;left:0;height:3px;z-index:70;background:linear-gradient(90deg,var(--green),var(--cyan),var(--violet));width:0;box-shadow:0 0 12px rgba(45,212,255,.6);}
+  /* partner marquee */
+  .marquee{overflow:hidden;border-top:1px solid var(--gline);border-bottom:1px solid var(--gline);padding:22px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);}
+  .mlabel{text-align:center;font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--mut);margin-bottom:18px;}
+  .mtrack{display:flex;gap:18px;width:max-content;animation:scrollx 28s linear infinite;}
+  .marquee:hover .mtrack{animation-play-state:paused;}
+  @keyframes scrollx{to{transform:translateX(-50%);}}
+  .mchip{flex:0 0 auto;display:flex;align-items:center;gap:9px;background:var(--glass);border:1px solid var(--gline);border-radius:14px;padding:13px 20px;font-size:16px;font-weight:800;color:#D4DEF0;white-space:nowrap;}
+  .mchip span{font-size:20px;}
+  /* impact calculator */
+  .calc{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;margin-top:46px;}
+  @media(max-width:860px){.calc{grid-template-columns:1fr;}}
+  .calcpanel{padding:30px;border-radius:var(--rad);}
+  .calcbig{font-size:clamp(44px,7vw,74px);font-weight:900;letter-spacing:-2px;line-height:1;background:linear-gradient(90deg,var(--green),var(--cyan));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .calcbig small{display:block;font-size:15px;font-weight:700;color:var(--mut);-webkit-text-fill-color:var(--mut);margin-top:8px;letter-spacing:0;}
+  .sliderrow{margin-top:24px;}
+  .sliderrow label{font-size:13px;font-weight:700;color:var(--mut);display:flex;justify-content:space-between;margin-bottom:10px;}
+  .sliderrow label b{color:#fff;font-size:16px;}
+  input[type=range]{-webkit-appearance:none;width:100%;height:8px;border-radius:999px;background:linear-gradient(90deg,var(--green),var(--cyan));outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.5),0 0 0 4px rgba(25,227,125,.35);}
+  input[type=range]::-moz-range-thumb{width:26px;height:26px;border:none;border-radius:50%;background:#fff;cursor:pointer;}
+  .calcnote{font-size:13px;color:var(--mut);margin-top:18px;}
+  .calcchart{padding:24px;border-radius:var(--rad);height:320px;}
+  /* interactive map embed */
+  .mapframe{margin-top:36px;border-radius:var(--rad);overflow:hidden;padding:6px;}
+  .mapframe iframe{width:100%;height:860px;border:0;border-radius:16px;background:transparent;display:block;}
+  @media(max-width:860px){.mapframe iframe{height:1280px;}}
+  /* nav extra link */
 </style>
 </head>
 <body>
+<div class="scrollprog" id="scrollprog"></div>
 <div class="bgfx"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div></div>
 <div class="grain"></div>
 
@@ -202,6 +243,7 @@
     <nav>
       <a href="#problema">La causa</a>
       <a href="#proceso">Cómo funciona</a>
+      <a href="#mapa">Mapa</a>
       <a href="#aliados">Beneficios</a>
       <a href="#ia">IA</a>
       <a href="#mision">Misión 2030</a>
@@ -228,6 +270,12 @@
       <div class="t"><div class="n cgold" data-count="2030">0</div><div class="l">meta mundial: Hambre Cero (ONU)</div></div>
     </div>
   </div>
+</section>
+
+<!-- PARTNER MARQUEE -->
+<section style="padding:40px 0">
+  <div class="wrap"><div class="mlabel">Marcas y comercios que pueden multiplicar su impacto</div></div>
+  <div class="marquee"><div class="mtrack" id="mtrack"></div></div>
 </section>
 
 <!-- PROBLEM -->
@@ -262,6 +310,16 @@
   </div>
 </section>
 
+<!-- INTERACTIVE PLATFORM MAP -->
+<section class="s" id="mapa">
+  <div class="wrap">
+    <span class="kick rv">Explóralo tú mismo</span>
+    <h2 class="big rv">¿Cómo funciona <span style="color:var(--cyan)">para ti?</span></h2>
+    <p class="sub rv d1">Elige tu rol — caminante, marca, banco de alimentos, comercio — y recorre tu viaje paso a paso. Toca cualquier nodo del mapa para descubrir todo lo que hace. ▶ Reproduce el viaje y míralo cobrar vida.</p>
+    <div class="mapframe glass rv d1"><iframe src="mapa.html" title="Mapa interactivo de la plataforma SuperPasos" loading="lazy"></iframe></div>
+  </div>
+</section>
+
 <!-- APP DEMO -->
 <section class="s" id="app">
   <div class="wrap">
@@ -269,12 +327,14 @@
     <h2 class="big rv">Camina como siempre. <span style="color:var(--cyan)">Cambia vidas sin darte cuenta.</span></h2>
     <div class="demo" style="margin-top:46px">
       <div class="rv">
-        <div class="phone"><div class="scr" id="screens">
-          <div class="pshot on"><div class="ring"></div><h4>Empieza a caminar</h4><p>Pulsa una vez. SuperPasos cuenta tus pasos en segundo plano, aunque apagues la pantalla.</p></div>
-          <div class="pshot"><span class="em">🍲</span><h4>¡Comida desbloqueada!</h4><p>Tu caminata acaba de financiar una comida para un niño. Lo ves al instante.</p></div>
-          <div class="pshot"><span class="em">🎟️</span><h4>Elige tu cupón</h4><p>Escoge una recompensa de una marca aliada y guárdala en tu billetera.</p></div>
-          <div class="pshot"><span class="em">🏆</span><h4>Compite con tu parche</h4><p>Sube en el ranking, gana el Reto del Mes y recibe premios especiales de las marcas.</p></div>
-        </div></div>
+        <div class="phonewrap">
+          <div class="liveBadge"><span class="ld"></span> APP EN VIVO · interactúa 👆</div>
+          <div class="phone"><div class="scr">
+            <div class="iframeskel" id="ifSkel"><div class="ring"></div><p>Cargando la app real…</p></div>
+            <iframe id="appFrame" class="appFrame" src="https://superpodercamina.vercel.app/" title="App SuperPasos en vivo" loading="lazy" onload="document.getElementById('ifSkel').style.display='none'"></iframe>
+          </div></div>
+          <div class="phoneglow"></div>
+        </div>
       </div>
       <div class="demolist rv d1" id="demolist">
         <div class="ditem act" data-i="0"><div class="di">🚶</div><div><b>Pasos verificados</b><br><span>Lee el chip de movimiento + GPS. Imposible de hacer trampa.</span></div></div>
@@ -283,6 +343,27 @@
         <div class="ditem" data-i="3"><div class="di">🏆</div><div><b>Parche y Reto del Mes</b><br><span>Comunidad, ranking y premios — caminar se vuelve adictivo.</span></div></div>
         <div style="margin-top:22px"><button class="btn grad" onclick="openInq('caminante')">Descargar la app</button></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT CALCULATOR -->
+<section class="s" id="calc">
+  <div class="wrap">
+    <span class="kick rv">Calcula tu impacto</span>
+    <h2 class="big rv">¿Cuántos niños alimentarías <span style="color:var(--green)">solo por caminar?</span></h2>
+    <p class="sub rv d1">Mueve el control y mira en tiempo real cómo tus pasos — y los de tu parche — se convierten en comidas cada mes.</p>
+    <div class="calc">
+      <div class="calcpanel glass rv">
+        <div class="calcbig"><span id="calcMeals">11</span><small>comidas al mes que ayudas a donar</small></div>
+        <div class="sliderrow">
+          <label>Pasos al día <b><span id="calcSteps">9.000</span> 👣</b></label>
+          <input type="range" id="stepSlider" min="2000" max="20000" step="500" value="9000" oninput="updateCalc()">
+        </div>
+        <div class="calcnote" id="calcNote">Equivale a unos <b id="calcKm">6,3 km</b> diarios. Con tu parche (5 personas) serían <b id="calcParche">57</b> comidas al mes. 🍲</div>
+        <div style="margin-top:22px"><button class="btn grad" onclick="openInq('caminante')">Empieza a sumar comidas</button></div>
+      </div>
+      <div class="calcchart glass rv d1"><canvas id="calcChart"></canvas></div>
     </div>
   </div>
 </section>
@@ -485,10 +566,13 @@ const pio=new IntersectionObserver((es)=>{es.forEach(e=>{ if(e.isIntersecting){
 pio.observe(ptrack);
 
 /* ---------- app demo cycler ---------- */
-let demoI=0; const shots=document.querySelectorAll('#screens .pshot'); const items=document.querySelectorAll('#demolist .ditem');
-function showShot(i){ demoI=i; shots.forEach((s,k)=>s.classList.toggle('on',k===i)); items.forEach((t,k)=>t.classList.toggle('act',k===i)); }
-items.forEach(t=>t.addEventListener('click',()=>showShot(+t.dataset.i)));
-let demoTimer=setInterval(()=>showShot((demoI+1)%shots.length),3200);
+const items=document.querySelectorAll('#demolist .ditem');
+let demoI=0;
+function highlight(i){ demoI=i; items.forEach((t,k)=>t.classList.toggle('act',k===i)); }
+items.forEach(t=>{ t.addEventListener('mouseenter',()=>highlight(+t.dataset.i)); t.addEventListener('click',()=>highlight(+t.dataset.i)); });
+// gently rotate the highlight so the list feels alive
+let demoTimer=setInterval(()=>highlight((demoI+1)%items.length),2600);
+document.getElementById('demolist').addEventListener('mouseleave',()=>{ /* keep last */ });
 
 /* ---------- forecast chart ---------- */
 function buildChart(){
@@ -507,6 +591,43 @@ function buildChart(){
 }
 const fio=new IntersectionObserver((es)=>{es.forEach(e=>{ if(e.isIntersecting){ buildChart(); fio.unobserve(e.target);} });},{threshold:.3});
 fio.observe(document.getElementById('fcChart'));
+
+/* ---------- scroll progress bar ---------- */
+addEventListener('scroll',()=>{ const h=document.documentElement; const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100; document.getElementById('scrollprog').style.width=p+'%'; });
+
+/* ---------- mouse parallax on background blobs ---------- */
+const blobs=document.querySelectorAll('.blob');
+addEventListener('mousemove',(e)=>{ const x=(e.clientX/innerWidth-.5), y=(e.clientY/innerHeight-.5);
+  blobs.forEach((b,i)=>{ const f=(i+1)*14; b.style.transform='translate('+(x*f)+'px,'+(y*f)+'px)'; }); });
+
+/* ---------- partner marquee ---------- */
+const brands=[['🛒','Éxito'],['🛍️','Carulla'],['🏪','Olímpica'],['🟢','Ara'],['🔴','D1'],['🥤','Postobón'],['🍫','Nutresa'],['🥛','Alquería'],['☕','Juan Valdez'],['🏬','Jumbo'],['💊','Cruz Verde'],['⛽','Terpel']];
+const mtrack=document.getElementById('mtrack');
+if(mtrack){ const set=brands.map(b=>'<div class="mchip"><span>'+b[0]+'</span>'+b[1]+'</div>').join(''); mtrack.innerHTML=set+set; }
+
+/* ---------- impact calculator + live chart ---------- */
+let calcChart=null;
+function buildCalcChart(){
+  const ctx=document.getElementById('calcChart'); if(!ctx||!window.Chart||calcChart) return;
+  calcChart=new Chart(ctx,{type:'bar',data:{labels:['Tú','Tu parche (×5)','Tu cuadra (×20)','Tu barrio (×100)'],
+    datasets:[{label:'Comidas / mes',data:[11,57,228,1140],
+      backgroundColor:['#19E37D','#2DD4FF','#8B6CFF','#FFD23F'],borderRadius:10,maxBarThickness:60}]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:900,easing:'easeOutQuart'},
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y.toLocaleString('es-CO')+' comidas/mes'}}},
+      scales:{x:{ticks:{color:'#C7D2E6',font:{size:12}},grid:{display:false}},
+              y:{ticks:{color:'#8392ad'},grid:{color:'rgba(255,255,255,.05)'}}}}});
+}
+function updateCalc(){
+  const steps=parseInt(document.getElementById('stepSlider').value);
+  const mealsMo=Math.round(steps*30/8000); // 8.000 pasos = 1 comida
+  document.getElementById('calcSteps').textContent=steps.toLocaleString('es-CO');
+  document.getElementById('calcMeals').textContent=mealsMo;
+  document.getElementById('calcKm').textContent=(steps*0.0007).toFixed(1).replace('.',',')+' km';
+  document.getElementById('calcParche').textContent=(mealsMo*5).toLocaleString('es-CO');
+  if(calcChart){ calcChart.data.datasets[0].data=[mealsMo,mealsMo*5,mealsMo*20,mealsMo*100]; calcChart.update(); }
+}
+const calcio=new IntersectionObserver((es)=>{es.forEach(e=>{ if(e.isIntersecting){ buildCalcChart(); updateCalc(); calcio.unobserve(e.target);} });},{threshold:.3});
+calcio.observe(document.getElementById('calcChart'));
 
 /* ---------- 2030 progress bar ---------- */
 const mio=new IntersectionObserver((es)=>{es.forEach(e=>{ if(e.isIntersecting){
