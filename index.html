@@ -443,7 +443,7 @@
       <button class="dtab" data-t="gob" onclick="showDash('gob',this)">🏛️ Gobierno</button>
       <button class="dtab" data-t="banco" onclick="showDash('banco',this)">🍲 Bancos de alimentos</button>
     </div>
-    <div class="dashframe glass rv d1"><iframe id="dashFrame" src="https://camina-y-alimenta-empresas.vercel.app/?demo=1&tab=dash" title="Tablero SuperPasos por dentro" loading="lazy"></iframe></div>
+    <div class="dashframe glass rv d1"><iframe id="dashFrame" src="https://empresas-deploy.vercel.app/?demo=1&tab=dash" title="Tablero SuperPasos por dentro" loading="lazy"></iframe></div>
     <p style="font-size:12.5px;color:var(--mut);margin-top:14px">Tablero de demostración. Cada patrocinador, banco de alimentos y entidad de gobierno tiene su propio acceso con datos reales y en vivo.</p>
   </div>
 </section>
@@ -655,7 +655,7 @@ calcio.observe(document.getElementById('calcChart'));
 /* ---------- platform-inside dashboard switcher ---------- */
 function showDash(t,el){
   document.querySelectorAll('.dtab').forEach(b=>b.classList.toggle('on',b===el));
-  document.getElementById('dashFrame').src='https://camina-y-alimenta-empresas.vercel.app/?demo=1&tab='+t;
+  document.getElementById('dashFrame').src='https://empresas-deploy.vercel.app/?demo=1&tab='+t;
 }
 
 /* ---------- 2030 progress bar ---------- */
