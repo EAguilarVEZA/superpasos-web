@@ -228,7 +228,13 @@
   .mapframe{margin-top:36px;border-radius:var(--rad);overflow:hidden;padding:6px;}
   .mapframe iframe{width:100%;height:860px;border:0;border-radius:16px;background:transparent;display:block;}
   @media(max-width:860px){.mapframe iframe{height:1280px;}}
-  /* nav extra link */
+  /* platform-inside dashboard embed */
+  .dtabs{display:flex;gap:10px;flex-wrap:wrap;margin-top:34px;}
+  .dtab{background:var(--glass);border:1px solid var(--gline);color:var(--mut);border-radius:999px;padding:11px 20px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;transition:.2s;}
+  .dtab.on{background:linear-gradient(135deg,var(--green),var(--cyan));color:#04210f;border-color:transparent;}
+  .dtab:hover{color:#fff;}
+  .dashframe{margin-top:20px;border-radius:var(--rad);overflow:hidden;padding:6px;}
+  .dashframe iframe{width:100%;height:780px;border:0;border-radius:16px;background:#0b1020;display:block;}
 </style>
 </head>
 <body>
@@ -245,6 +251,7 @@
       <a href="#proceso">Cómo funciona</a>
       <a href="#mapa">Mapa</a>
       <a href="#aliados">Beneficios</a>
+      <a href="#dentro">Por dentro</a>
       <a href="#ia">IA</a>
       <a href="#mision">Misión 2030</a>
     </nav>
@@ -422,6 +429,22 @@
         <div class="benefit"><span class="bi" style="background:rgba(139,108,255,.15);color:var(--violet)">📊</span><div><b>Datos e informe ESG</b><span>Dashboard en vivo + certificado de impacto, listos para tu reporte de sostenibilidad.</span></div></div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- PLATFORM INSIDE (live dashboards) -->
+<section class="s" id="dentro">
+  <div class="wrap">
+    <span class="kick rv">La plataforma por dentro</span>
+    <h2 class="big rv">Transparencia total: <span style="color:var(--cyan)">mira el tablero real.</span></h2>
+    <p class="sub rv d1">Esto es exactamente lo que ven nuestros aliados por dentro. Cambia de vista y explora el panel en vivo — métricas, mapas e impacto (con datos de demostración).</p>
+    <div class="dtabs rv d1">
+      <button class="dtab on" data-t="dash" onclick="showDash('dash',this)">🏢 Patrocinadores</button>
+      <button class="dtab" data-t="gob" onclick="showDash('gob',this)">🏛️ Gobierno</button>
+      <button class="dtab" data-t="banco" onclick="showDash('banco',this)">🍲 Bancos de alimentos</button>
+    </div>
+    <div class="dashframe glass rv d1"><iframe id="dashFrame" src="https://camina-y-alimenta-empresas.vercel.app/?demo=1&tab=dash" title="Tablero SuperPasos por dentro" loading="lazy"></iframe></div>
+    <p style="font-size:12.5px;color:var(--mut);margin-top:14px">Tablero de demostración. Cada patrocinador, banco de alimentos y entidad de gobierno tiene su propio acceso con datos reales y en vivo.</p>
   </div>
 </section>
 
@@ -628,6 +651,12 @@ function updateCalc(){
 }
 const calcio=new IntersectionObserver((es)=>{es.forEach(e=>{ if(e.isIntersecting){ buildCalcChart(); updateCalc(); calcio.unobserve(e.target);} });},{threshold:.3});
 calcio.observe(document.getElementById('calcChart'));
+
+/* ---------- platform-inside dashboard switcher ---------- */
+function showDash(t,el){
+  document.querySelectorAll('.dtab').forEach(b=>b.classList.toggle('on',b===el));
+  document.getElementById('dashFrame').src='https://camina-y-alimenta-empresas.vercel.app/?demo=1&tab='+t;
+}
 
 /* ---------- 2030 progress bar ---------- */
 const mio=new IntersectionObserver((es)=>{es.forEach(e=>{ if(e.isIntersecting){
