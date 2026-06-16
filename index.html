@@ -235,6 +235,40 @@
   .dtab:hover{color:#fff;}
   .dashframe{margin-top:20px;border-radius:var(--rad);overflow:hidden;padding:6px;}
   .dashframe iframe{width:100%;height:780px;border:0;border-radius:16px;background:#0b1020;display:block;}
+  /* full-screen viewer (mobile tap-to-open for heavy embeds) */
+  .mobLaunch{display:none;}
+  .viewer{position:fixed;inset:0;z-index:120;background:#070B16;flex-direction:column;display:none;}
+  .viewer.open{display:flex;}
+  .viewerBar{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid var(--gline);font-weight:800;font-size:14px;}
+  .viewerBar .vClose{color:var(--green);cursor:pointer;font-weight:800;}
+  .viewer iframe{flex:1;width:100%;border:0;background:#070d1c;}
+  /* sticky mobile CTA bar */
+  .mbar{display:none;}
+  /* ============ MOBILE TUNING ============ */
+  @media(max-width:760px){
+    body{font-size:16px;}
+    .wrap{padding:0 18px;}
+    section.s{padding:60px 0;}
+    .hero{padding:120px 0 60px;}
+    h2.big{font-size:clamp(26px,8vw,34px);}
+    .sub,.lede{font-size:16px;}
+    /* hide heavy inline embeds; show launch buttons instead */
+    .phonewrap,.mapframe,.dashframe{display:none!important;}
+    .mobLaunch{display:flex;width:100%;justify-content:center;margin-top:24px;}
+    .demo{gap:24px;} .demolist .ditem{padding:13px;}
+    /* full-screen chat */
+    #pasiChat{left:0;right:0;bottom:0;width:100%;max-width:100%;border-radius:18px 18px 0 0;}
+    #pasiMsgs{height:46vh;}
+    #pasi{left:14px;bottom:74px;max-width:78vw;}
+    /* room for sticky bar */
+    footer{padding-bottom:90px;}
+    .final{padding:70px 0 90px;}
+    /* sticky bottom CTA bar */
+    .mbar{display:flex;gap:10px;position:fixed;left:0;right:0;bottom:0;z-index:75;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:rgba(7,11,22,.92);backdrop-filter:blur(12px);border-top:1px solid var(--gline);}
+    .mbar .btn{flex:1;justify-content:center;padding:14px 10px;font-size:15px;}
+    .nav .btn.sm{padding:8px 12px;font-size:12.5px;}
+    .ticker{gap:20px;} .ticker .t .n{font-size:28px;}
+  }
 </style>
 </head>
 <body>
@@ -324,6 +358,7 @@
     <h2 class="big rv">¿Cómo funciona <span style="color:var(--cyan)">para ti?</span></h2>
     <p class="sub rv d1">Elige tu rol — caminante, marca, banco de alimentos, comercio — y recorre tu viaje paso a paso. Toca cualquier nodo del mapa para descubrir todo lo que hace. ▶ Reproduce el viaje y míralo cobrar vida.</p>
     <div class="mapframe glass rv d1"><iframe src="mapa.html" title="Mapa interactivo de la plataforma SuperPasos" loading="lazy"></iframe></div>
+    <button class="btn grad mobLaunch" onclick="openViewer('mapa.html','Mapa · ¿Cómo funciona para ti?')">🗺️ Abrir el mapa interactivo</button>
   </div>
 </section>
 
@@ -342,6 +377,7 @@
           </div></div>
           <div class="phoneglow"></div>
         </div>
+        <button class="btn grad mobLaunch" onclick="openViewer('https://superpodercamina.vercel.app/','La app SuperPasos · en vivo')">📲 Abrir la app en pantalla completa</button>
       </div>
       <div class="demolist rv d1" id="demolist">
         <div class="ditem act" data-i="0"><div class="di">🚶</div><div><b>Pasos verificados</b><br><span>Lee el chip de movimiento + GPS. Imposible de hacer trampa.</span></div></div>
@@ -385,7 +421,7 @@
       <div class="acard glass ae rv"><div class="ah">🏢</div><span class="tag green">Para las marcas</span><h3>Marketing que sí deja huella</h3>
         <ul>
           <li><span class="ck">✓</span> Cada peso es impacto medible y trazable, no un comercial que se olvida.</li>
-          <li><span class="ck">✓</span> Beneficio tributario por donación a entidades sin ánimo de lucro.</li>
+          <li><span class="ck">✓</span> Deducción tributaria del <b>125%</b> de lo donado (art. 126‑2 E.T.) — y nosotros gestionamos que el banco de alimentos te emita el certificado.</li>
           <li><span class="ck">✓</span> Tu marca aparece en cada cupón y en cada "gracias" al usuario.</li>
           <li><span class="ck">✓</span> Reporte y certificado de impacto listo para tu junta y tu informe ESG.</li>
         </ul>
@@ -424,7 +460,7 @@
       <div class="chartbox glass rv"><canvas id="fcChart"></canvas></div>
       <div class="rv d1">
         <div class="benefit"><span class="bi" style="background:rgba(25,227,125,.15);color:var(--green)">🛒</span><div><b>Tráfico a tienda</b><span>El cupón se redime en tu punto de venta. Cada caminante motivado es una visita y una compra adicional.</span></div></div>
-        <div class="benefit"><span class="bi" style="background:rgba(255,210,63,.15);color:var(--gold)">🧾</span><div><b>Beneficio tributario</b><span>La donación a entidades sin ánimo de lucro es deducible — tu inversión social también optimiza impuestos.</span></div></div>
+        <div class="benefit"><span class="bi" style="background:rgba(255,210,63,.15);color:var(--gold)">🧾</span><div><b>Beneficio tributario (art. 126‑2)</b><span>Las donaciones a bancos de alimentos deducen el 125% de su valor. Como socio, te conseguimos el certificado de donación que lo respalda.</span></div></div>
         <div class="benefit"><span class="bi" style="background:rgba(45,212,255,.15);color:var(--cyan)">💚</span><div><b>Marca con propósito</b><span>El 70% de los consumidores prefiere marcas con causa. Apareces en cada comida y cada cupón.</span></div></div>
         <div class="benefit"><span class="bi" style="background:rgba(139,108,255,.15);color:var(--violet)">📊</span><div><b>Datos e informe ESG</b><span>Dashboard en vivo + certificado de impacto, listos para tu reporte de sostenibilidad.</span></div></div>
       </div>
@@ -444,6 +480,7 @@
       <button class="dtab" data-t="banco" onclick="showDash('banco',this)">🍲 Bancos de alimentos</button>
     </div>
     <div class="dashframe glass rv d1"><iframe id="dashFrame" src="https://empresas-deploy.vercel.app/?demo=1&tab=dash" title="Tablero SuperPasos por dentro" loading="lazy"></iframe></div>
+    <p class="mobLaunch" style="color:var(--mut);font-size:13.5px;display:none;text-align:center;margin-top:18px">👆 Toca una vista arriba para abrir el tablero en pantalla completa.</p>
     <p style="font-size:12.5px;color:var(--mut);margin-top:14px">Tablero de demostración. Cada patrocinador, banco de alimentos y entidad de gobierno tiene su propio acceso con datos reales y en vivo.</p>
   </div>
 </section>
@@ -546,6 +583,18 @@
 <div class="tourbar"><i id="tourbar"></i></div>
 
 <!-- INQUIRY MODAL -->
+<!-- MOBILE: sticky CTA bar -->
+<div class="mbar">
+  <button class="btn grad" onclick="openInq('empresa')">🏢 Soy marca</button>
+  <button class="btn coral" onclick="openInq('caminante')">🚶 Caminar</button>
+</div>
+
+<!-- Full-screen viewer for heavy embeds on mobile -->
+<div class="viewer" id="viewer">
+  <div class="viewerBar"><span id="viewerTitle">SuperPasos</span><span class="vClose" onclick="closeViewer()">✕ Cerrar</span></div>
+  <iframe id="viewerFrame" src="about:blank" title="SuperPasos"></iframe>
+</div>
+
 <div class="modal" id="modal">
   <div class="modalc">
     <span class="x" onclick="closeInq()">✕</span>
@@ -657,8 +706,13 @@ calcio.observe(document.getElementById('calcChart'));
 /* ---------- platform-inside dashboard switcher ---------- */
 function showDash(t,el){
   document.querySelectorAll('.dtab').forEach(b=>b.classList.toggle('on',b===el));
-  document.getElementById('dashFrame').src='https://empresas-deploy.vercel.app/?demo=1&tab='+t;
+  const url='https://empresas-deploy.vercel.app/?demo=1&tab='+t;
+  if(innerWidth<=760){ openViewer(url, 'Tablero · '+(el?el.textContent.trim():'')); return; }
+  document.getElementById('dashFrame').src=url;
 }
+/* full-screen viewer (mobile tap-to-open) */
+function openViewer(url,title){ document.getElementById('viewerTitle').textContent=title||'SuperPasos'; document.getElementById('viewerFrame').src=url; document.getElementById('viewer').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeViewer(){ document.getElementById('viewer').classList.remove('open'); document.getElementById('viewerFrame').src='about:blank'; document.body.style.overflow=''; }
 
 /* ---------- 2030 progress bar ---------- */
 const mio=new IntersectionObserver((es)=>{es.forEach(e=>{ if(e.isIntersecting){
