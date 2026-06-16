@@ -552,10 +552,12 @@
     <h3 id="mTitle">Súmate a SuperPasos</h3>
     <p id="mSub">Déjanos tus datos y te contactamos en menos de 24 horas.</p>
     <label>Soy…</label>
-    <select id="mRole"><option value="empresa">Una marca / patrocinador</option><option value="caminante">Caminante</option><option value="banco">Banco de alimentos</option></select>
-    <label>Nombre</label><input id="mName" placeholder="Tu nombre">
-    <label>Correo o WhatsApp</label><input id="mContact" placeholder="correo@empresa.com">
-    <button class="btn grad" style="width:100%;margin-top:22px;justify-content:center" onclick="sendInq()">Enviar y contactar →</button>
+    <select id="mRole" onchange="renderInq()">
+      <option value="empresa">Una marca / patrocinador</option>
+      <option value="caminante">Caminante</option>
+      <option value="banco">Banco de alimentos</option>
+    </select>
+    <div id="mFields"></div>
   </div>
 </div>
 
@@ -689,16 +691,60 @@ const secMsgs={problema:'El problema que resolvemos 💔',proceso:'Cuatro pasos,
 const sio=new IntersectionObserver((es)=>{es.forEach(e=>{ if(e.isIntersecting && !touring && secMsgs[e.target.id]) pasiSay(secMsgs[e.target.id]); });},{threshold:.55});
 Object.keys(secMsgs).forEach(id=>{ const el=document.getElementById(id); if(el) sio.observe(el); });
 
-/* ---------- inquiry modal ---------- */
-const roleTitles={empresa:['Conviértete en patrocinador','Lleva tu marketing al siguiente nivel con impacto medible.'],caminante:['Empieza a caminar','Descarga la app y convierte tus pasos en comidas.'],banco:['Únete como banco de alimentos','Suma un nuevo flujo de donaciones predecible y trazable.']};
-function openInq(role){ const m=document.getElementById('modal'); document.getElementById('mRole').value=role||'empresa';
-  const t=roleTitles[role||'empresa']; document.getElementById('mTitle').textContent=t[0]; document.getElementById('mSub').textContent=t[1]; m.classList.add('open'); }
+/* ---------- inquiry modal (role-specific lead capture) ---------- */
+const APP_URL='https://superpodercamina.vercel.app/';
+const roleTitles={
+  empresa:['Conviértete en patrocinador','Lleva tu marketing al siguiente nivel con impacto medible. Te contactamos en menos de 24 horas.'],
+  caminante:['Empieza a caminar','Abre la app y convierte tus pasos en comidas. No necesitas descargar nada.'],
+  banco:['Únete como banco de alimentos','Suma un nuevo flujo de donaciones predecible y trazable. Te contactamos en menos de 24 horas.']
+};
+// field sets per role; caminante has no form (just launch the app)
+const fieldDefs={
+  empresa:[
+    ['coName','Nombre de la empresa','text','Ej: Postobón'],
+    ['name','Tu nombre','text','Tu nombre y cargo'],
+    ['email','Correo corporativo','email','nombre@empresa.com'],
+    ['phone','Teléfono','tel','+57 ...'],
+    ['wa','WhatsApp','tel','+57 ... (en Colombia todo va por WhatsApp 💚)']
+  ],
+  banco:[
+    ['orgName','Nombre de la institución u organización','text','Ej: Banco de Alimentos de Cali'],
+    ['name','Tu nombre','text','Tu nombre y cargo'],
+    ['email','Correo institucional','email','nombre@organizacion.org'],
+    ['phone','Teléfono','tel','+57 ...'],
+    ['wa','WhatsApp','tel','+57 ... (en Colombia todo va por WhatsApp 💚)']
+  ]
+};
+function renderInq(){
+  const role=document.getElementById('mRole').value;
+  const t=roleTitles[role]; document.getElementById('mTitle').textContent=t[0]; document.getElementById('mSub').textContent=t[1];
+  const box=document.getElementById('mFields');
+  if(role==='caminante'){
+    box.innerHTML=`
+      <div style="text-align:center;padding:8px 0 4px">
+        <div style="font-size:46px;margin-bottom:8px">📲</div>
+        <p style="color:var(--mut);font-size:14.5px;margin-bottom:18px">SuperPasos funciona directo en tu navegador — sin App Store, sin instalar. Ábrela y empieza a caminar.</p>
+        <a class="btn grad" style="width:100%;justify-content:center;margin-bottom:10px" href="${APP_URL}" target="_blank" rel="noopener">🚶 Abrir la app ahora</a>
+        <button class="btn glass" style="width:100%;justify-content:center" onclick="copyAppLink(this)">🔗 Copiar el enlace para mi celular</button>
+      </div>`;
+    return;
+  }
+  const fields=fieldDefs[role];
+  box.innerHTML = fields.map(f=>`<label>${f[1]}</label><input id="inq_${f[0]}" type="${f[2]}" placeholder="${f[3]}">`).join('')
+    + `<button class="btn grad" style="width:100%;margin-top:22px;justify-content:center" onclick="sendInq()">Enviar y contactar →</button>`;
+}
+function openInq(role){ document.getElementById('mRole').value=role||'empresa'; renderInq(); document.getElementById('modal').classList.add('open'); }
 function closeInq(){ document.getElementById('modal').classList.remove('open'); }
 document.getElementById('modal').addEventListener('click',e=>{ if(e.target.id==='modal') closeInq(); });
+function copyAppLink(btn){ navigator.clipboard?.writeText(APP_URL).then(()=>{ btn.textContent='✅ ¡Enlace copiado!'; setTimeout(()=>btn.textContent='🔗 Copiar el enlace para mi celular',2200); }); }
 function sendInq(){
-  const role=document.getElementById('mRole').value, name=document.getElementById('mName').value, c=document.getElementById('mContact').value;
-  const subj=encodeURIComponent('SuperPasos · '+role+' · '+(name||''));
-  const body=encodeURIComponent('Rol: '+role+'\nNombre: '+name+'\nContacto: '+c+'\n\nQuiero sumarme a SuperPasos.');
+  const role=document.getElementById('mRole').value, fields=fieldDefs[role];
+  const vals={}; fields.forEach(f=>vals[f[0]]=(document.getElementById('inq_'+f[0])||{}).value||'');
+  const reqName = role==='empresa' ? vals.coName : vals.orgName;
+  if(!reqName || !vals.email){ alert('Por favor completa al menos el nombre de la '+(role==='empresa'?'empresa':'organización')+' y el correo.'); return; }
+  const lines = fields.map(f=>f[1]+': '+vals[f[0]]).join('\n');
+  const subj=encodeURIComponent('SuperPasos · '+(role==='empresa'?'Patrocinador':'Banco de alimentos')+' · '+reqName);
+  const body=encodeURIComponent('Quiero sumarme a SuperPasos como '+(role==='empresa'?'patrocinador':'banco de alimentos')+'.\n\n'+lines);
   window.location.href='mailto:edgarbluegroup@gmail.com?subject='+subj+'&body='+body;
 }
 
